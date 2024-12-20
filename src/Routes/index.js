@@ -3,8 +3,6 @@ import { Routes, Route } from 'react-router-dom';
 import SignIn from '../pages/Signin';
 import SignUp from '../pages/Signup';
 import Dashboard from '../pages/Dashboard';
-import Customers from '../pages/Customers';
-import New from '../pages/New';
 
 import Private from './private';
 
@@ -17,11 +15,6 @@ function RoutesApp() {
            
             <Route path="/dashboard" element={<Private><Dashboard /> </Private>} />
 
-
-            <Route path="/customers" element={<Private><Customers/></Private>}/>
-            
-            <Route path="/new" element={<Private><New/></Private>}/>
-            <Route path="/new/:id" element={<Private><New/></Private>}/>
         </Routes>
 
     )

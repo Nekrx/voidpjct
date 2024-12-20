@@ -1,7 +1,7 @@
 .sidebar{
     margin: 0;
     padding: 0;
-    background-color: rgb(196, 169, 95);
+    background-color: rgb(150, 150, 150);
     position: fixed;
     height: 100%;
     overflow: auto;
@@ -9,8 +9,7 @@
 }
 
 .sidebar div{
-    background: url('../../assets/bg11.jpg');
-    background-color: rgb(196, 169, 95) ;
+    background-color: rgb(150, 150, 150);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -21,7 +20,7 @@
     padding-top: 30px;
 }
 
-.sidebar div img{
+/* .sidebar div img{
     width: 100px;
     height: 100px;
     display:block;
@@ -30,18 +29,17 @@
     object-fit: cover;
     filter: drop-shadow(3px 4px 7px #121212);
     -webkit-filter:drop-shadow(3px 4px 7px #121212);
-}
+} */
 
 .sidebar a{
-    display: block;
-    padding: 6px;
+    /* display: block; */
+    padding: 10px;
     display: flex;
     text-decoration: none;
     color: rgba(255,255,257, 0.7);
     flex-direction: row;
     align-items: center;
     transition: ease-in-out 0.4s;
-
 }
 
 .sidebar a svg{
@@ -56,6 +54,11 @@
 .content{
     margin-left: 200px;
     padding: 1px 16px;
+}
+
+.sidebar h3{
+    display: flex;
+    margin-left: 15px;
 }
 
 @media screen and (max-width :700px){

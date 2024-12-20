@@ -17,16 +17,16 @@
 }
 
 .login-area{
-    background-color: rgb(196, 169, 95);
+    background-color: rgb(150, 150, 150);
     width: 100%;
     display: flex;
     justify-content: center;
 }
-.login-area img{
+/* .login-area img{
     width: 190px;
     height: 190px;
     padding: 20px;
-}
+} */
 
 form{
     margin-top: 1.5rem;
@@ -56,7 +56,7 @@ form button{
     height: 35px;
     border:0;
     border-radius: 4px ;
-    background-color: rgb(235, 159, 66);
+    background-color: rgb(78, 78, 78);
     font-size: 1.3rem;
     color: #181c2e;
 }
