@@ -1,7 +1,7 @@
 /* Estilo geral do sidebar */
 .sidebar {
     padding: 0;
-    background-color: rgb(150, 150, 150);
+    background-color:#f8f8f8;
     position: fixed;
     height: 100%;
     overflow: auto;
