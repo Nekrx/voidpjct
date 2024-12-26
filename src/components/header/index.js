@@ -1,37 +1,56 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-
 import { AuthContext } from '../../contests/auth';
-import { FiHome, FiSettings, FiBookmark, FiCodesandbox, FiChevronsUp} from 'react-icons/fi';
+import { FiHome, FiSettings, FiBookmark, FiCodesandbox, FiChevronsUp, FiCornerUpLeft, FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 import './header.css';
-import { CgFormatUppercase } from 'react-icons/cg';
 
-
-export default function Header(){
-    const {user} = useContext(AuthContext);
+export default function Header() {
+  const { user } = useContext(AuthContext);
   
-    return(
-        <div className="sidebar">
-            <Link to="/dashboard">
-            <FiHome color="#FFF" size= {24}/>
-            Home
-            </Link>
-            <Link to="/">
-            <FiCodesandbox color="#FFF" size= {24}/>
-            Criar Evento
-            </Link>
-            <Link to="/">
-            <FiBookmark color="#FFF" size= {24}/>
-            Eventos passados
-            </Link>
-            <Link to="/">
-            <FiSettings color="#FFF" size= {24}/>
-            Profile
-            </Link>
-            <Link to="/">
-            <FiChevronsUp color="#FFF" size= {24}/>
-            Alterar plano
-            </Link>
-            </div>
-    )
+  const [isSidebarHidden, setIsSidebarHidden] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarHidden(!isSidebarHidden);
+  };
+
+  return (
+    <div className={`sidebar ${isSidebarHidden ? 'hidden' : ''}`}>
+      <div>
+      <Link to="/dashboard">
+        <FiHome size={24} />
+        {!isSidebarHidden && 'Home'}
+      </Link>
+      <Link to="/">
+        <FiCodesandbox size={24} />
+        {!isSidebarHidden && 'Criar Evento'}
+      </Link>
+      <Link to="/">
+        <FiBookmark size={24} />
+        {!isSidebarHidden && 'Eventos passados'}
+      </Link>
+      </div>
+      
+      <button className="toggle-button" onClick={toggleSidebar}>
+      <h3>{!isSidebarHidden && 'Esconder'}</h3>
+      {isSidebarHidden ? <FiArrowRight size={50} /> : <FiArrowLeft size={50} />}
+      </button>
+
+      
+      <div>
+          <Link to="/">
+            <FiSettings size={24} />
+            {!isSidebarHidden && 'Profile'}
+          </Link>
+          <Link to="/">
+            <FiChevronsUp size={24} />
+            {!isSidebarHidden && 'Alterar plano'}
+          </Link>
+          <Link className="logoutbtn" to="/">
+            <FiCornerUpLeft size={24} />
+            {!isSidebarHidden && 'Logout'}
+          </Link>
+      </div>
+
+    </div>
+  );
 }
