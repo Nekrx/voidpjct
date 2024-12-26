@@ -1,3 +1,4 @@
+
 .container-center{
     height: 100%;
     display: flex;
@@ -14,6 +15,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    padding: 20px;
 }
 
 .login-area{
@@ -21,6 +23,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    border-radius: 4px;
 }
 .login-area img{
     width: 190px;
@@ -38,7 +41,7 @@ form{
 form h1{
     text-align: center;
     margin-bottom: 1rem;
-    color: #000000;
+    color: #ffffff;
 }
 
 .login input{
@@ -58,7 +61,7 @@ form button{
     border-radius: 4px ;
     background-color: rgb(78, 78, 78);
     font-size: 1.3rem;
-    color: #ffffff;
+    color: #b4b4b4;
 }
 
 form button:hover{
@@ -69,7 +72,6 @@ form button:hover{
     font-size: 1.3rem;
     color: #ffffff;
 }
-
 
 .login a{
     margin: 1.5rem 0;

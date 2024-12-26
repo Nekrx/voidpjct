@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, RecaptchaVerifier } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 
@@ -17,4 +17,4 @@ const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 
 
-export { auth, db};
+export { auth, db, RecaptchaVerifier};

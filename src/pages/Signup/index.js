@@ -7,12 +7,17 @@ export default function SignUp() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const { signUp, loadingAuth } = useContext(AuthContext);
 
     async function handleSubmit(e) {
         e.preventDefault();
 
-        if (name !== '' && email !== '' && password !== '') {
+        if (name !== '' && email !== '' && password !== '')  {
+            if (password !== confirmPassword) {
+                alert('As senhas não correspondem!');
+                return;
+            }
             await signUp(email, password, name);
         }
     }
@@ -50,6 +55,13 @@ export default function SignUp() {
                         placeholder="*************"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        onKeyDown={handleKeyPress}
+                    />
+                    <input
+                        type="password"
+                        placeholder="Confirme sua senha"
+                        value={confirmPassword} // Vinculado ao estado confirmPassword
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                         onKeyDown={handleKeyPress}
                     />
 

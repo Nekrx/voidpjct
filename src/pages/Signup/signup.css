@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #121212;
+    background-color: #707273;
     padding: 0 12px;
 }
 
@@ -38,7 +38,7 @@ form{
 form h1{
     text-align: center;
     margin-bottom: 1rem;
-    color: #181c2e;
+    color: #000000;
 }
 
 .login input{
@@ -58,8 +58,18 @@ form button{
     border-radius: 4px ;
     background-color: rgb(78, 78, 78);
     font-size: 1.3rem;
-    color: #181c2e;
+    color: #ffffff;
 }
+
+form button:hover{
+    height: 35px;
+    border:0;
+    border-radius: 4px ;
+    background-color: rgb(0, 0, 0);
+    font-size: 1.3rem;
+    color: #ffffff;
+}
+
 
 .login a{
     margin: 1.5rem 0;

@@ -48,7 +48,8 @@ export default function SignIn() {
                 </form>
 
 
-                <Link to="/register">Criar uma conta</Link>
+                <Link to="/register">Criar uma conta</Link> 
+                <Link to="/recover">Esqueceu a senha?</Link>
 
             </div>
         </div>

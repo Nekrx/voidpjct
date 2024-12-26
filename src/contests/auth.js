@@ -1,9 +1,10 @@
 import { useState, createContext, useEffect } from 'react';
-import { auth, db } from '../services/firebaseConnections';
+import { auth, db, RecaptchaVerifier } from '../services/firebaseConnections';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { sendPasswordResetEmail} from 'firebase/auth';
 
 export const AuthContext = createContext({});
 
@@ -13,6 +14,7 @@ function AuthProvider({ children }) {
 
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
+    
 
     useEffect(() => {
         async function loadUser() {
@@ -25,7 +27,7 @@ function AuthProvider({ children }) {
             
         }
         loadUser();
-    }, [])
+    }, []);
 
     async function signIn(email, password) {
         setLoadingAuth(true);
@@ -94,6 +96,22 @@ function AuthProvider({ children }) {
             });
     }
 
+    async function resetPassword(email) {
+        try {
+            await sendPasswordResetEmail(auth, email);
+            toast.success("E-mail de redefinição de senha enviado!");
+        } catch (error) {
+            if (error.code === 'auth/user-not-found') {
+                toast.error('Usuário não encontrado!');
+            } else if (error.code === 'auth/invalid-email') {
+                toast.error('E-mail inválido!');
+            } else {
+                toast.error('Erro ao enviar e-mail de redefinição, tente novamente!');
+            }
+            console.error(error);
+        }
+    }
+
     function storageUser(data) {
         localStorage.setItem('@voidpj', JSON.stringify(data))
     }
@@ -104,6 +122,8 @@ function AuthProvider({ children }) {
         setUser(null);
 
     }
+
+
 
 
     return (
@@ -117,7 +137,8 @@ function AuthProvider({ children }) {
                 loadingAuth,
                 loading,
                 storageUser,
-                setUser
+                setUser,
+                resetPassword
             }}
         >
             {children}
