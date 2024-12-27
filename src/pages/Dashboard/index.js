@@ -9,17 +9,18 @@ import { collection, getDocs, orderBy, limit, startAfter, query } from "firebase
 import { db } from "../../services/firebaseConnections";
 import { format } from "date-fns";
 
-const listRef = collection(db, "Chamados");
+const listRef = collection(db, "Torneios");
 
 export default function Dashboard() {
   const { logout } = useContext(AuthContext);
-  const [chamados, setChamados] = useState([]);
+  const [torneios, setTorneios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isEmpty, setIsEmpty] = useState(false);
   const [lastDocs, setLastDocs] = useState();
   const [loadingMore, setLoadingMore] = useState(false);
 
-  async function fetchChamados() {
+
+  async function fetchTorneios() {
     const q = query(listRef, orderBy("created", "desc"), limit(5));
     const querySnapshot = await getDocs(q);
 
@@ -31,7 +32,7 @@ export default function Dashboard() {
       });
 
       const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-      setChamados(lista);
+      setTorneios(lista);
       setLastDocs(lastDoc);
     } else {
       setIsEmpty(true);
@@ -41,7 +42,7 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
-    fetchChamados();
+    fetchTorneios();
   }, []);
 
   async function handleMore() {
@@ -58,7 +59,7 @@ export default function Dashboard() {
       });
 
       const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-      setChamados((prevChamados) => [...prevChamados, ...lista]);
+      setTorneios((prevTorneios) => [...prevTorneios, ...lista]);
       setLastDocs(lastDoc);
     } else {
       setIsEmpty(true);
@@ -92,7 +93,7 @@ export default function Dashboard() {
           <FiMessageSquare size={25} />
         </Title>
 
-        {chamados.length === 0 ? (
+        {torneios.length === 0 ? (
           <div className="container dashboard">
             <span> Nenhum torneio encontrado...</span>
           </div>
@@ -107,38 +108,6 @@ export default function Dashboard() {
                   <th scope="col">Data</th>
                 </tr>
               </thead>
-              {/* <tbody>
-                {chamados.map((item, index) => (
-                  <tr key={index}>
-                    <td data-label="Cliente">{item.cliente}</td>
-                    <td data-label="Assunto">{item.assunto}</td>
-                    <td data-label="Status">
-                      <span
-                        className="badge"
-                        style={{
-                          backgroundColor:
-                            item.status === "Aberto"
-                              ? "#5cb85c"
-                              : item.status === "Progresso"
-                              ? "#0275d8"
-                              : "#999",
-                        }}
-                      >
-                        {item.status}
-                      </span>
-                    </td>
-                    <td data-label="Cadastrado">{item.createdFormat}</td>
-                    <td data-label="#">
-                      <button className="action" style={{ backgroundColor: "#3583f6" }}>
-                        <FiSearch color="#FFF" size={17} />
-                      </button>
-                      <Link to={`/new/${item.id}`} className="action" style={{ backgroundColor: "#f6a935" }}>
-                        <FiEdit2 color="#FFF" size={17} />
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody> */}
             </table>
 
             {loadingMore && <h3>Buscando mais torneios...</h3>}
