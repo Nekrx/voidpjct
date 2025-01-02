@@ -20,7 +20,7 @@ export default function Header() {
         <FiHome size={24} />
         {!isSidebarHidden && 'Home'}
       </Link>
-      <Link to="/">
+      <Link to="/criarevento">
         <FiCodesandbox size={24} />
         {!isSidebarHidden && 'Criar Evento'}
       </Link>
