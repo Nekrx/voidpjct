@@ -3,70 +3,50 @@ import { AuthContext } from "../../contests/auth";
 import Header from "../../components/header";
 import './dashboard.css';
 import Title from '../../components/Title';
-import { FiPlus, FiMessageSquare, FiSearch, FiEdit2 } from "react-icons/fi";
+import { FiMessageSquare } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { collection, getDocs, orderBy, limit, startAfter, query } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../services/firebaseConnections";
-import { format } from "date-fns";
 
-const listRef = collection(db, "Torneios");
+const listRef = collection(db, "tournaments");
 
 export default function Dashboard() {
   const { logout } = useContext(AuthContext);
-  const [torneios, setTorneios] = useState([]);
+  const [tournaments, setTournaments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isEmpty, setIsEmpty] = useState(false);
-  const [lastDocs, setLastDocs] = useState();
-  const [loadingMore, setLoadingMore] = useState(false);
 
+  async function fetchTournaments() {
+    try {
+      const querySnapshot = await getDocs(listRef); // Consulta simples, sem ordenação
 
-  async function fetchTorneios() {
-    const q = query(listRef, orderBy("created", "desc"), limit(5));
-    const querySnapshot = await getDocs(q);
+      if (querySnapshot.empty) {
+        setIsEmpty(true);
+        return;
+      }
 
-    const isCollectionEmpty = querySnapshot.size === 0;
-    if (!isCollectionEmpty) {
       let lista = [];
       querySnapshot.forEach((doc) => {
-        lista.push(doc.data());
+        const tournament = doc.data();
+        console.log("Tournament:", tournament); // Adiciona o log para verificar os dados
+
+        lista.push({
+          id: doc.id, // ID do torneio
+          name: tournament.name, // Nome do torneio
+        });
       });
 
-      const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-      setTorneios(lista);
-      setLastDocs(lastDoc);
-    } else {
-      setIsEmpty(true);
+      setTournaments(lista);
+    } catch (error) {
+      console.error("Erro ao buscar torneios: ", error);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   useEffect(() => {
-    fetchTorneios();
+    fetchTournaments();
   }, []);
-
-  async function handleMore() {
-    setLoadingMore(true);
-
-    const q = query(listRef, orderBy("created", "desc"), startAfter(lastDocs), limit(5));
-    const querySnapshot = await getDocs(q);
-    const isCollectionEmpty = querySnapshot.size === 0;
-
-    if (!isCollectionEmpty) {
-      let lista = [];
-      querySnapshot.forEach((doc) => {
-        lista.push(doc.data());
-      });
-
-      const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-      setTorneios((prevTorneios) => [...prevTorneios, ...lista]);
-      setLastDocs(lastDoc);
-    } else {
-      setIsEmpty(true);
-    }
-
-    setLoadingMore(false);
-  }
 
   if (loading) {
     return (
@@ -93,30 +73,19 @@ export default function Dashboard() {
           <FiMessageSquare size={25} />
         </Title>
 
-        {torneios.length === 0 ? (
+        {tournaments.length === 0 ? (
           <div className="container dashboard">
-            <span> Nenhum torneio encontrado...</span>
+            <span>Nenhum torneio encontrado...</span>
           </div>
         ) : (
-          <>
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Torneio</th>
-                  <th scope="col">Rodadas</th>
-                  <th scope="col">Timer</th>
-                  <th scope="col">Data</th>
-                </tr>
-              </thead>
-            </table>
-
-            {loadingMore && <h3>Buscando mais torneios...</h3>}
-            {!loadingMore && !isEmpty && (
-              <button className="btn-more" onClick={handleMore}>
-               Buscar mais...
-              </button>
-            )}
-          </>
+          <div className="tournaments-list">
+            {tournaments.map((tournament, index) => (
+              <div key={index} className="tournament-item">
+                <span>{tournament.name} - {tournament.id}</span>
+                <Link to={`/evento/${tournament.id}`} className="btn-enter">Ver Detalhes</Link>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>

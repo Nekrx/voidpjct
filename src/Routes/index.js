@@ -6,6 +6,7 @@ import Dashboard from '../pages/Dashboard';
 import Recover from '../pages/Recover';
 import CriarEvento from '../pages/criarevento_temp';
 import EntrarTorneio from '../pages/detalhestorneio';
+import GerenciarTorneio from '../pages/evento';
 
 import Private from './private';
 
@@ -19,6 +20,8 @@ function RoutesApp() {
             <Route path="/dashboard" element={<Private><Dashboard /></Private>} />
             <Route path="/CriarEvento" element={<Private><CriarEvento /></Private>}/>
             <Route path="/entrarevento/:id" element={<Private><EntrarTorneio /></Private>}/>
+            <Route path="/evento/:id" element={<Private><GerenciarTorneio /></Private>}/>
+
 
 
         </Routes>
