@@ -18,7 +18,7 @@ function RoutesApp() {
 
             <Route path="/dashboard" element={<Private><Dashboard /></Private>} />
             <Route path="/CriarEvento" element={<Private><CriarEvento /></Private>}/>
-            <Route path="/entrartorneio/:id" element={<Private><EntrarTorneio /></Private>}/>
+            <Route path="/entrarevento/:id" element={<Private><EntrarTorneio /></Private>}/>
 
 
         </Routes>

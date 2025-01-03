@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../services/firebaseConnections";
 import { collection, doc, setDoc } from "firebase/firestore";
+import './criarevento.css';
 
 export default function CriarEvento() {
   const [name, setName] = useState("");
@@ -9,33 +10,6 @@ export default function CriarEvento() {
   const [minPlayers, setMinPlayers] = useState("");
   const [duration, setDuration] = useState("");
   const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const tournamentId = Math.random().toString(36).substring(2, 10).toUpperCase().slice(0, 8);
-      console.log("Tournament ID:", tournamentId);
-
-      const tournamentData = {
-        name,
-        mode,
-        minPlayers: parseInt(minPlayers, 10),
-        duration: duration === "Ilimitado" ? duration : parseInt(duration, 10),
-        participants: [],
-      };
-
-      const docRef = doc(db, "tournaments", tournamentId);
-      await setDoc(docRef, tournamentData);
-      console.log("Tournament added with ID:", tournamentId);
-
-      window.open(`/entrartorneio/${tournamentId}`, "_blank");
-
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("Erro ao criar torneio:", error);
-    }
-  };
 
   const getMinimumPlayers = (selectedMode) => {
     switch (selectedMode) {
@@ -59,8 +33,56 @@ export default function CriarEvento() {
     setMinPlayers(minPlayersRequired !== null ? minPlayersRequired : "");
   };
 
+  const handleMinPlayersChange = (e) => {
+    const newMinPlayers = parseInt(e.target.value, 10);
+    const minPlayersAllowed = getMinimumPlayers(mode);
+    if (newMinPlayers >= minPlayersAllowed) {
+      setMinPlayers(newMinPlayers);
+    } else {
+      e.target.value = minPlayers;
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const minPlayersRequired = getMinimumPlayers(mode);
+    if (minPlayers < minPlayersRequired) {
+      alert(`O número mínimo de jogadores deve ser pelo menos ${minPlayersRequired}.`);
+      return;
+    }
+
+    try {
+      const tournamentId = Math.random().toString(36).substring(2, 10).toUpperCase().slice(0, 8);
+      console.log("Tournament ID:", tournamentId);
+
+      const tournamentData = {
+        name,
+        mode,
+        minPlayers: parseInt(minPlayers, 10),
+        duration: duration === "Ilimitado" ? duration : parseInt(duration, 10),
+        participants: [],
+      };
+
+      const docRef = doc(db, "tournaments", tournamentId);
+      await setDoc(docRef, tournamentData);
+      console.log("Tournament added with ID:", tournamentId);
+
+      window.open(`/entrarevento/${tournamentId}`, "_blank");
+
+      navigate(`/evento/${tournamentId}`);
+    } catch (error) {
+      console.error("Erro ao criar torneio:", error);
+    }
+  };
+
+  const isSubmitDisabled = () => {
+    const minPlayersRequired = getMinimumPlayers(mode);
+    return minPlayersRequired !== null && (minPlayers < minPlayersRequired);
+  };
+
   return (
-    <div>
+    <div className="container">
       <h1>Criar Torneio</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -74,25 +96,26 @@ export default function CriarEvento() {
         </label>
         <label>
           Modalidade:
+          <br/>
           <select value={mode} onChange={handleModeChange} required>
             <option value="" disabled>Selecione a modalidade</option>
             <option value="suiço">Suiço</option>
             <option value="matamata">Mata-mata</option>
             <option value="multiplayer">Multiplayer</option>
             <option value="competitivo">Competitivo</option>
-            <option value="2x2">2x2</option>
-            <option value="draft">Draft</option>
+            <option value="2x2">Duplas</option>
+            <option value="draft">Booster Draft</option>
             <option value="listajog">Lista de Jogadores</option>
             <option value="sorteio">Sorteio</option>
           </select>
         </label>
         <label>
-          Número mínimo de jogadores:
+          <p>Número mínimo de jogadores:</p>
           <input
             type="number"
             value={minPlayers}
-            onChange={(e) => setMinPlayers(e.target.value)}
-            required={getMinimumPlayers(mode) !== null}
+            onChange={handleMinPlayersChange}
+            required={getMinimumPlayers(mode) !== null && minPlayers >= getMinimumPlayers(mode)}
             disabled={getMinimumPlayers(mode) === null}
           />
         </label>
@@ -105,7 +128,7 @@ export default function CriarEvento() {
             <option value="Ilimitado">Ilimitado</option>
           </select>
         </label>
-        <button type="submit">Criar Torneio</button>
+        <button type="submit" disabled={isSubmitDisabled()}>Criar Torneio</button>
       </form>
     </div>
   );
