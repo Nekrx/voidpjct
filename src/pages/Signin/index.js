@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import './signin.css'
+import './signin.css';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contests/auth';
 

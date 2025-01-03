@@ -18,7 +18,7 @@ export default function Dashboard() {
 
   async function fetchTournaments() {
     try {
-      const querySnapshot = await getDocs(listRef); // Consulta simples, sem ordenação
+      const querySnapshot = await getDocs(listRef); 
 
       if (querySnapshot.empty) {
         setIsEmpty(true);
@@ -28,11 +28,11 @@ export default function Dashboard() {
       let lista = [];
       querySnapshot.forEach((doc) => {
         const tournament = doc.data();
-        console.log("Tournament:", tournament); // Adiciona o log para verificar os dados
+        console.log("Tournament:", tournament); 
 
         lista.push({
-          id: doc.id, // ID do torneio
-          name: tournament.name, // Nome do torneio
+          id: doc.id, 
+          name: tournament.name, 
         });
       });
 

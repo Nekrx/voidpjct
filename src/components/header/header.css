@@ -57,6 +57,7 @@
     stroke: black;
     align-items: center;
     justify-content: start;
+    color: black;
 }
 .content {
     margin-left: 200px;

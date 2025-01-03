@@ -53,6 +53,7 @@ form h1{
 }
 
 form button{
+    align-self: center;
     height: 35px;
     border:0;
     border-radius: 4px ;
